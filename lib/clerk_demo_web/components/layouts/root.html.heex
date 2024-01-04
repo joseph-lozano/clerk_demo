@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="[scrollbar-gutter:stable]">
+<html lang="en" >
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -12,6 +12,45 @@
     </script>
   </head>
   <body class="bg-white antialiased">
+    <script>
+      // Get this URL and Publishable Key from the Clerk Dashboard
+      const clerkPublishableKey = "pk_test_c21hcnQtc3VuYmlyZC0yMy5jbGVyay5hY2NvdW50cy5kZXYk";
+      const frontendApi = "https://smart-sunbird-23.clerk.accounts.dev";
+      const version = "@4"; // Set to appropriate version
+
+      // Creates asynchronous script
+      const script = document.createElement("script");
+      script.setAttribute("data-clerk-frontend-api", frontendApi);
+      script.setAttribute("data-clerk-publishable-key", clerkPublishableKey);
+      script.async = true;
+      script.src = `${frontendApi}/npm/@clerk/clerk-js${version}/dist/clerk.browser.js`;
+
+      // Adds listener to initialize ClerkJS after it's loaded
+      script.addEventListener("load", async function () {
+        await window.Clerk.load({
+          appearance: {
+            variables: {
+              colorPrimary: "#FD4F00"
+            }
+          }
+        });
+        console.log("clerk", window.Clerk.user)
+        if (!window.Clerk.user) {
+          document.getElementById("sign-id").classList.remove("hidden")
+        } else {
+          window.Clerk.mountUserButton(document.getElementById("user-button"), {
+            afterSignOutUrl: "/"
+          })
+        }
+      });
+      document.body.appendChild(script);
+      
+    </script>
+    <nav class="bg-brand h-16 flex justify-end items-center px-3">
+      <button onclick="showSignIn()" id="sign-id" class="hidden bg-gray-300 h-12 px-3 py-2 rounded-lg font-bold text-lg hover:bg-gray-200 active:bg-gray-300">Sign In</button>
+      <div id="user-button" class="hidden" />
+    </nav>
+    <div id="clerk-root" />
     <%= @inner_content %>
   </body>
 </html>

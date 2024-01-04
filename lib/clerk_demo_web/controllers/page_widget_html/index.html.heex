@@ -1,0 +1,23 @@
+<.header>
+  Listing Page widgets
+  <:actions>
+    <.link href={~p"/page_widgets/new"}>
+      <.button>New Page widget</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="page_widgets" rows={@page_widgets} row_click={&JS.navigate(~p"/page_widgets/#{&1}")}>
+  <:col :let={page_widget} label="Name"><%= page_widget.name %></:col>
+  <:action :let={page_widget}>
+    <div class="sr-only">
+      <.link navigate={~p"/page_widgets/#{page_widget}"}>Show</.link>
+    </div>
+    <.link navigate={~p"/page_widgets/#{page_widget}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={page_widget}>
+    <.link href={~p"/page_widgets/#{page_widget}"} method="delete" data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>

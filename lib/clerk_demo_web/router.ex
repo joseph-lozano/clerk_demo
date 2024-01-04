@@ -18,6 +18,7 @@ defmodule ClerkDemoWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    resources "/page_widgets", PageWidgetController
   end
 
   # Other scopes may use custom stacks.

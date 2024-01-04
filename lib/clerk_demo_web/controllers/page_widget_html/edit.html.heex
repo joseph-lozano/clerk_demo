@@ -1,0 +1,8 @@
+<.header>
+  Edit Page widget <%= @page_widget.id %>
+  <:subtitle>Use this form to manage page_widget records in your database.</:subtitle>
+</.header>
+
+<.page_widget_form changeset={@changeset} action={~p"/page_widgets/#{@page_widget}"} />
+
+<.back navigate={~p"/page_widgets"}>Back to page_widgets</.back>

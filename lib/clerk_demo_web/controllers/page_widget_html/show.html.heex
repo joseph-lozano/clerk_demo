@@ -1,0 +1,15 @@
+<.header>
+  Page widget <%= @page_widget.id %>
+  <:subtitle>This is a page_widget record from your database.</:subtitle>
+  <:actions>
+    <.link href={~p"/page_widgets/#{@page_widget}/edit"}>
+      <.button>Edit page_widget</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name"><%= @page_widget.name %></:item>
+</.list>
+
+<.back navigate={~p"/page_widgets"}>Back to page_widgets</.back>
