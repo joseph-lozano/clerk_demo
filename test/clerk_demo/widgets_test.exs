@@ -35,7 +35,9 @@ defmodule ClerkDemo.WidgetsTest do
       page_widget = page_widget_fixture()
       update_attrs = %{name: "some updated name"}
 
-      assert {:ok, %PageWidget{} = page_widget} = Widgets.update_page_widget(page_widget, update_attrs)
+      assert {:ok, %PageWidget{} = page_widget} =
+               Widgets.update_page_widget(page_widget, update_attrs)
+
       assert page_widget.name == "some updated name"
     end
 

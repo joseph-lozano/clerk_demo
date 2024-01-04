@@ -8,16 +8,24 @@ defmodule ClerkDemoWeb.Router do
     plug :put_root_layout, html: {ClerkDemoWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :fetch_user_id
   end
 
   pipeline :api do
     plug :accepts, ["json"]
   end
 
+  pipeline :protected do
+  end
+
   scope "/", ClerkDemoWeb do
     pipe_through :browser
 
     get "/", PageController, :home
+  end
+
+  scope "/", ClerkDemoWeb do
+    pipe_through [:browser, :protected]
     resources "/page_widgets", PageWidgetController
   end
 
@@ -41,5 +49,20 @@ defmodule ClerkDemoWeb.Router do
       live_dashboard "/dashboard", metrics: ClerkDemoWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
+  end
+
+  def fetch_user_id(conn, _opts) do
+    user_id = conn.req_cookies["__session"]
+    |> then(fn
+      nil -> nil
+
+      session -> case ClerkDemo.Token.verify_and_validate(session) do
+        {:ok, %{"sub" => user_id}} -> user_id
+        _ -> nil
+      end
+    end)
+    dbg(user_id)
+    assign(conn, :user_id, user_id)
+    
   end
 end

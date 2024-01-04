@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -32,7 +32,8 @@
             variables: {
               colorPrimary: "#FD4F00"
             }
-          }
+          },
+          afterSignInUrl: "/page_widgets"
         });
         console.log("clerk", window.Clerk.user)
         if (!window.Clerk.user) {
@@ -44,10 +45,15 @@
         }
       });
       document.body.appendChild(script);
-      
     </script>
     <nav class="bg-brand h-16 flex justify-end items-center px-3">
-      <button onclick="showSignIn()" id="sign-id" class="hidden bg-gray-300 h-12 px-3 py-2 rounded-lg font-bold text-lg hover:bg-gray-200 active:bg-gray-300">Sign In</button>
+      <button
+        onclick="showSignIn()"
+        id="sign-id"
+        class="hidden bg-gray-300 h-12 px-3 py-2 rounded-lg font-bold text-lg hover:bg-gray-200 active:bg-gray-300"
+      >
+        Sign In
+      </button>
       <div id="user-button" class="hidden" />
     </nav>
     <div id="clerk-root" />

@@ -17,7 +17,8 @@ defmodule ClerkDemo.Application do
       # Start a worker by calling: ClerkDemo.Worker.start_link(arg)
       # {ClerkDemo.Worker, arg},
       # Start to serve requests, typically the last entry
-      ClerkDemoWeb.Endpoint
+      ClerkDemoWeb.Endpoint,
+      {ClerkDemo.Strategy, time_interval: 2_000}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
