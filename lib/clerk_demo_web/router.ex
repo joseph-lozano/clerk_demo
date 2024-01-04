@@ -16,6 +16,7 @@ defmodule ClerkDemoWeb.Router do
   end
 
   pipeline :protected do
+    plug :ensure_user_id
   end
 
   scope "/", ClerkDemoWeb do
@@ -52,17 +53,32 @@ defmodule ClerkDemoWeb.Router do
   end
 
   def fetch_user_id(conn, _opts) do
-    user_id = conn.req_cookies["__session"]
-    |> then(fn
-      nil -> nil
+    user_id =
+      conn.req_cookies["__session"]
+      |> then(fn
+        nil ->
+          nil
 
-      session -> case ClerkDemo.Token.verify_and_validate(session) do
-        {:ok, %{"sub" => user_id}} -> user_id
-        _ -> nil
-      end
-    end)
-    dbg(user_id)
+        session ->
+          case ClerkDemo.Token.verify_and_validate(session) do
+            {:ok, %{"sub" => user_id}} -> user_id
+            _ -> nil
+          end
+      end)
+
     assign(conn, :user_id, user_id)
-    
+  end
+
+  def ensure_user_id(conn, _opts) do
+    case conn.assigns.user_id do
+      nil ->
+        conn
+        |> put_flash(:error, "You must be logged in to access this page.")
+        |> redirect(to: "/")
+        |> halt()
+
+      _ ->
+        conn
+    end
   end
 end

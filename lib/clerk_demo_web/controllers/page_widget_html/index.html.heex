@@ -9,6 +9,7 @@
 
 <.table id="page_widgets" rows={@page_widgets} row_click={&JS.navigate(~p"/page_widgets/#{&1}")}>
   <:col :let={page_widget} label="Name"><%= page_widget.name %></:col>
+  <:col :let={page_widget} label="User ID"><%= page_widget.user_id %></:col>
   <:action :let={page_widget}>
     <div class="sr-only">
       <.link navigate={~p"/page_widgets/#{page_widget}"}>Show</.link>

@@ -4,6 +4,7 @@ defmodule ClerkDemo.Widgets.PageWidget do
 
   schema "page_widgets" do
     field :name, :string
+    field :user_id, :string
 
     timestamps(type: :utc_datetime)
   end
@@ -11,7 +12,7 @@ defmodule ClerkDemo.Widgets.PageWidget do
   @doc false
   def changeset(page_widget, attrs) do
     page_widget
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+    |> cast(attrs, [:name, :user_id])
+    |> validate_required([:name, :user_id])
   end
 end

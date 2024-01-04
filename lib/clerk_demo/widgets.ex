@@ -17,8 +17,13 @@ defmodule ClerkDemo.Widgets do
       [%PageWidget{}, ...]
 
   """
-  def list_page_widgets do
-    Repo.all(PageWidget)
+  def list_page_widgets(params) do
+    dbg(params)
+
+    from(page_widget in PageWidget,
+      where: page_widget.user_id == ^params["user_id"]
+    )
+    |> Repo.all()
   end
 
   @doc """

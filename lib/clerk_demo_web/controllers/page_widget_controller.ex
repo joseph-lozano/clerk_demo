@@ -5,7 +5,9 @@ defmodule ClerkDemoWeb.PageWidgetController do
   alias ClerkDemo.Widgets.PageWidget
 
   def index(conn, _params) do
-    page_widgets = Widgets.list_page_widgets()
+    params = %{"user_id" => conn.assigns.user_id}
+    dbg(params)
+    page_widgets = Widgets.list_page_widgets(params)
     render(conn, :index, page_widgets: page_widgets)
   end
 
@@ -15,6 +17,8 @@ defmodule ClerkDemoWeb.PageWidgetController do
   end
 
   def create(conn, %{"page_widget" => page_widget_params}) do
+    page_widget_params = Map.put(page_widget_params, "user_id", conn.assigns.user_id)
+
     case Widgets.create_page_widget(page_widget_params) do
       {:ok, page_widget} ->
         conn
