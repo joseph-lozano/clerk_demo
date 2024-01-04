@@ -18,7 +18,6 @@ defmodule ClerkDemo.Widgets do
 
   """
   def list_page_widgets(params) do
-
     from(page_widget in PageWidget,
       where: page_widget.user_id == ^params["user_id"]
     )

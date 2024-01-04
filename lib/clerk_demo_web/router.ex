@@ -12,6 +12,8 @@ defmodule ClerkDemoWeb.Router do
   end
 
   pipeline :api do
+    plug :fetch_session
+    plug :fetch_user_id
     plug :accepts, ["json"]
   end
 
@@ -33,6 +35,11 @@ defmodule ClerkDemoWeb.Router do
       live "/live_sprockets/:id", LiveSprocketLive.Show, :show
       live "/live_sprockets/:id/show/edit", LiveSprocketLive.Show, :edit
     end
+  end
+
+  scope "/", ClerkDemoWeb do
+    pipe_through [:api, :fetch_user_id]
+    get "/api", PageController, :api
   end
 
   scope "/", ClerkDemoWeb do
@@ -71,16 +78,21 @@ defmodule ClerkDemoWeb.Router do
 
         session ->
           case ClerkDemo.Token.verify_and_validate(session) do
-            {:ok, %{"sub" => user_id}} -> user_id
-            _ -> nil
+            {:ok, %{"sub" => user_id} = jwt} ->
+              dbg(jwt)
+              user_id
+
+            _ ->
+              nil
           end
       end)
 
-    user_id
-    |> then(fn 
-      nil -> conn
-      user_id -> put_session(conn, :user_id, user_id)
-    end)
+    user_id = if conn.req_cookies["__client_uat"] === "0", do: nil, else: user_id
+
+    IO.inspect(user_id, label: "fetch_user_id")
+
+    conn
+    |> put_session(:user_id, user_id)
     |> assign(:user_id, user_id)
   end
 

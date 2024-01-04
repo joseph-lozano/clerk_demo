@@ -6,12 +6,16 @@ defmodule ClerkDemoWeb.UserLiveAuth do
     dbg(user_id)
     socket = assign(socket, :user_id, user_id)
 
-
     if socket.assigns.user_id do
       ClerkDemoWeb.Endpoint.subscribe("users_socket:#{user_id}")
       {:cont, socket}
     else
-      {:halt, redirect(socket, to: "/")}
+      socket =
+        socket
+        |> put_flash(:error, "You must be logged in to access this page.")
+        |> redirect(to: "/")
+
+      {:halt, socket}
     end
   end
 end

@@ -36,6 +36,7 @@
           afterSignInUrl: "/page_widgets"
         });
         console.log("clerk", window.Clerk.user)
+        await fetch("/api").then(res => res.json()).then(console.log)
         if (!window.Clerk.user) {
           document.getElementById("sign-id").classList.remove("hidden")
         } else {
