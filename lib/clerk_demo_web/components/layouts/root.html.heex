@@ -40,7 +40,7 @@
           document.getElementById("sign-id").classList.remove("hidden")
         } else {
           window.Clerk.mountUserButton(document.getElementById("user-button"), {
-            afterSignOutUrl: "/"
+            afterSignOutUrl: "/sign-out"
           })
         }
       });
@@ -52,6 +52,12 @@
         class="mr-2 bg-gray-300 h-12 px-3 py-2 rounded-lg font-bold text-lg hover:bg-gray-200 active:bg-gray-300"
       >
         Go to Widgets
+      </.link>
+      <.link
+        href={~p"/live_sprockets"}
+        class="mr-2 bg-gray-300 h-12 px-3 py-2 rounded-lg font-bold text-lg hover:bg-gray-200 active:bg-gray-300"
+      >
+        Go to Sprockets
       </.link>
       <button
         onclick="showSignIn()"

@@ -23,6 +23,16 @@ defmodule ClerkDemoWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    get "/sign-out", PageController, :sign_out
+
+    live_session :default, on_mount: ClerkDemoWeb.UserLiveAuth do
+      live "/live_sprockets", LiveSprocketLive.Index, :index
+      live "/live_sprockets/new", LiveSprocketLive.Index, :new
+      live "/live_sprockets/:id/edit", LiveSprocketLive.Index, :edit
+
+      live "/live_sprockets/:id", LiveSprocketLive.Show, :show
+      live "/live_sprockets/:id/show/edit", LiveSprocketLive.Show, :edit
+    end
   end
 
   scope "/", ClerkDemoWeb do
@@ -66,7 +76,12 @@ defmodule ClerkDemoWeb.Router do
           end
       end)
 
-    assign(conn, :user_id, user_id)
+    user_id
+    |> then(fn 
+      nil -> conn
+      user_id -> put_session(conn, :user_id, user_id)
+    end)
+    |> assign(:user_id, user_id)
   end
 
   def ensure_user_id(conn, _opts) do

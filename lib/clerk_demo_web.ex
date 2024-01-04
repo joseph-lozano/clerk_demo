@@ -55,6 +55,10 @@ defmodule ClerkDemoWeb do
         layout: {ClerkDemoWeb.Layouts, :app}
 
       unquote(html_helpers())
+
+      def handle_info(%{event: "sign-out"}, socket) do
+        {:noreply, redirect(socket, to: "/sign-out")}
+      end
     end
   end
 

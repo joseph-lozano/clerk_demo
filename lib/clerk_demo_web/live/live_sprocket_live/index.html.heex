@@ -1,0 +1,47 @@
+<.header>
+  Listing Live sprockets
+  <:actions>
+    <.link patch={~p"/live_sprockets/new"}>
+      <.button>New Live sprocket</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="live_sprockets"
+  rows={@streams.live_sprockets}
+  row_click={fn {_id, live_sprocket} -> JS.navigate(~p"/live_sprockets/#{live_sprocket}") end}
+>
+  <:col :let={{_id, live_sprocket}} label="Name"><%= live_sprocket.name %></:col>
+  <:col :let={{_id, live_sprocket}} label="User"><%= live_sprocket.user_id %></:col>
+  <:action :let={{_id, live_sprocket}}>
+    <div class="sr-only">
+      <.link navigate={~p"/live_sprockets/#{live_sprocket}"}>Show</.link>
+    </div>
+    <.link patch={~p"/live_sprockets/#{live_sprocket}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, live_sprocket}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: live_sprocket.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="live_sprocket-modal"
+  show
+  on_cancel={JS.patch(~p"/live_sprockets")}
+>
+  <.live_component
+    module={ClerkDemoWeb.LiveSprocketLive.FormComponent}
+    id={@live_sprocket.id || :new}
+    title={@page_title}
+    action={@live_action}
+    live_sprocket={@live_sprocket}
+    patch={~p"/live_sprockets"}
+  />
+</.modal>

@@ -6,7 +6,6 @@ defmodule ClerkDemoWeb.PageWidgetController do
 
   def index(conn, _params) do
     params = %{"user_id" => conn.assigns.user_id}
-    dbg(params)
     page_widgets = Widgets.list_page_widgets(params)
     render(conn, :index, page_widgets: page_widgets)
   end

@@ -1,0 +1,32 @@
+<.header>
+  Live sprocket <%= @live_sprocket.id %>
+  <:subtitle>This is a live_sprocket record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/live_sprockets/#{@live_sprocket}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit live_sprocket</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name"><%= @live_sprocket.name %></:item>
+  <:item title="User"><%= @live_sprocket.user_id %></:item>
+</.list>
+
+<.back navigate={~p"/live_sprockets"}>Back to live_sprockets</.back>
+
+<.modal
+  :if={@live_action == :edit}
+  id="live_sprocket-modal"
+  show
+  on_cancel={JS.patch(~p"/live_sprockets/#{@live_sprocket}")}
+>
+  <.live_component
+    module={ClerkDemoWeb.LiveSprocketLive.FormComponent}
+    id={@live_sprocket.id}
+    title={@page_title}
+    action={@live_action}
+    live_sprocket={@live_sprocket}
+    patch={~p"/live_sprockets/#{@live_sprocket}"}
+  />
+</.modal>
